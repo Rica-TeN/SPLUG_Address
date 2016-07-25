@@ -10,32 +10,56 @@ int iCount = 0 ;
  */
 void File_Load ( FILE * fAddress )
 {
-	//RC_LinkedList * pNode ;
+	int i = 0 ;
+	int iTemp = 0 ;
+	char cTemp [ 150 ] ;
+	char cNum [ 11 ] ;
 
 
-
-
-
-	while ( ( NULL != fAddress ) && ( 0 != feof ( fAddress ) ) )
+	while ( ( NULL != fAddress ) && ( fgets ( cTemp , 149 , fAddress ) ) )
 	{
-		/*pNode = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
-		
-		pNode -> m_pPrev = pTail -> m_pPrev ;
-		pNode -> m_pPrev -> m_pNext = pNode ;
-		pNode -> m_pNext = pTail ;
-		pTail -> m_pPrev = pNode ;*/
+		/*if ( 0 != feof ( fAddress ) )						//////// FFFFFFFFFUCCCCCCCCCCCCCCCKKKKKKKKKKKKKKK YYOOOOOOOOOOOOOOOOOOOUUUUUUUUUUU EEEEEEEEEEOOOOOOOOOOOFFFFF
+		{
+			break ;
+		}*/
 
-		//pNode		pNew		pTail
-		pTail -> m_pPrev -> m_pNext = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;						// pNode -> m_pNext = pNew
 
-		
+		pTail -> m_pPrev -> m_pNext = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;							// pNode -> m_pNext = pNew
+
+
 		pTail -> m_pPrev -> m_pNext -> m_pNext = pTail ;																// pNew -> m_pNext = pTail
 		pTail -> m_pPrev -> m_pNext -> m_pPrev = pTail -> m_pPrev ;														// pNew -> m_pPrev = pNode
 		pTail -> m_pPrev = pTail -> m_pPrev -> m_pNext ;																// pTail -> m_pPrev = pNew
 
 
-		//pTail -> m_pPrev -> m_pNext = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
-		fscanf ( fAddress , "%s\t\t%s\t%ld\n" , pTail -> m_pPrev -> m_crgName , pTail -> m_pPrev -> m_crgAddress , & pTail -> m_pPrev -> m_lNumber ) ;
+		//fscanf ( fAddress , "%s\t\t%s\t\t%ld\n" , pTail -> m_pPrev -> m_crgName , pTail -> m_pPrev -> m_crgAddress , & pTail -> m_pPrev -> m_lNumber ) ;
+	//	fgets ( cTemp , 149 , fAddress ) ;
+		printf ( "feof : %lf\n" , feof ( fAddress ) ) ;
+		puts ( cTemp ) ;
+
+		while ( '\n' != cTemp [ i ] )
+		{
+			++ i ;
+
+
+			if ( ( '\t' == cTemp [ i - 1 ] ) && ( '\t' == cTemp [ i ] ) && ( ! iTemp ) )
+			{
+				cTemp [ i - 1 ] = '\0' ;
+				RC_Copy_Nto0 ( cTemp , pTail -> m_pPrev -> m_crgName , 0 , 0 , i ) ;
+				iTemp = i + 1 ;
+			}
+			else if ( ( '\t' == cTemp [ i - 1 ] ) && ( '\t' == cTemp [ i ] ) )
+			{
+				cTemp [ i - 1 ] = '\0' ;
+				RC_Copy_Nto0 ( cTemp , pTail -> m_pPrev -> m_crgAddress , iTemp , 0 , i - iTemp ) ;
+				iTemp = i + 1 ;
+			}
+		}
+
+		RC_Copy_Nto0 ( cTemp , cNum , iTemp , 0 , i - iTemp ) ;
+
+		pTail -> m_pPrev -> m_lNumber = atol ( cNum ) ;
+
 		++ iCount ;
 	}
 }
@@ -53,7 +77,7 @@ void File_Save ( FILE * fAddress )
 
 		for ( i = 0 ; i < iCount ; ++i )
 		{
-			fprintf ( fAddress , "%s\t\t%s\t0%ld\n" , pNode -> m_crgName , pNode -> m_crgAddress , pNode -> m_lNumber ) ;
+			fprintf ( fAddress , "%s\t\t%s\t\t0%ld\n" , pNode -> m_crgName , pNode -> m_crgAddress , pNode -> m_lNumber ) ;
 			pNode = pNode -> m_pNext ;
 		}
 	}
@@ -103,8 +127,6 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 		fflush ( stdin ) ;
 		printf ( "Address : " ) ;		
 		fgets ( pTemp -> m_crgAddress , 99 , stdin ) ;
-//		fflush ( stdin ) ;
-//		scanf ( "%s" , pTemp -> m_crgAddress ) ;
 		printf ( "Number : " ) ;
 		scanf ( "%ld" , & pTemp -> m_lNumber ) ;
 
@@ -152,10 +174,6 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 	{
 		RC_LinkedList * pNode = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
 		RC_LinkedList * pSort ; 
-//		pTail -> m_pNext = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
-		
-
-//		pTail -> m_pNext -> m_pPrev ;
 
 			
 		printf ( "Name : " ) ;
@@ -165,7 +183,6 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 		fflush ( stdin ) ;
 		fgets ( pNode -> m_crgAddress , 99 , stdin ) ;
 		fflush ( stdin ) ;
-//		scanf ( "%s" , pNode -> m_crgAddress ) ;
 		printf ( "Number : " ) ;
 		scanf ( "%ld" , & pNode -> m_lNumber ) ;
 
@@ -178,9 +195,6 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 		pNode -> m_pPrev = pSort ;
 
 		++ iCount ;
-
-//		if ( NULL == ( pHead -> m_pNext ) )
-//			pHead -> m_pNext = pNode ;	
 	}
 }
 
@@ -299,7 +313,6 @@ void Delete_Member ()
 
 
 		free ( pDelete ) ;
-//		pNode -> m_pNext = pNode -> m_pNext -> m_pNext ;
 	}
 	else
 		printf ( "Member doesn't exist.\n" ) ;
@@ -383,7 +396,6 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 
 
 		crgInput [ i ] = '\0' ;
-//		scanf ( "%s" , crgInput ) ;
 
 		while ( NULL != pNode )
 		{
@@ -576,6 +588,9 @@ void RC_Copy_Nto0 ( char * cpOrigin , char * cpCopy , int iOrigin_Index , int iC
 	cpCopy [ i ] = '\0' ;
 }
 
+/*
+ * Remove \n. gets () save \n.
+ */
 void Remove_Line_Escape_Sequence ( RC_LinkedList * pNode )
 {
 	int i = 0 ;
@@ -589,16 +604,17 @@ void Remove_Line_Escape_Sequence ( RC_LinkedList * pNode )
 	pNode -> m_crgAddress [ i ] = '\0' ;
 }
 
+/*
+ * free or delete all malloc or new.
+ */
+All_free ( RC_LinkedList * pNode )
+{
+	while ( pTail != pNode )
+	{
+		pNode = pNode -> m_pNext ;
 
+		free ( pNode -> m_pPrev ) ;
+	}
 
-
-
-
-
-
-
-
-
-
-// TODO
-// Same Name check. Add RC_LinkedList member, and use it.
+	free ( pNode ) ;
+}

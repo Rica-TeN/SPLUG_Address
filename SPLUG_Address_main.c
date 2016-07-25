@@ -10,8 +10,14 @@ int _tmain ()
 	FILE * fAddress ;
 	
 
-//	fAddress = fopen ( "C:\\Documents\\Address.txt" , "w+" ) ;
-	fAddress = fopen ( "Address.txt" , "w+" ) ;
+	fAddress = fopen ( "Address.txt" , "r+" ) ;
+	
+	
+	if ( NULL == fAddress)
+	{
+		fAddress = fopen ( "Address.txt" , "w+" ) ;
+	}
+
 
 	pHead -> m_pPrev = NULL ;
 	pHead -> m_pNext = pTail ;
@@ -66,7 +72,6 @@ int _tmain ()
 
 
 	fclose ( fAddress ) ;
-	free ( pTail ) ;
-	free ( pHead ) ;
+	All_free ( pHead ) ;
 }
 

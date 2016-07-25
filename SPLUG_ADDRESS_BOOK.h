@@ -20,6 +20,9 @@ void RC_Copy_Nto0 ( char * cpOrigin , char * cpCopy , int iOrigin_Index , int iC
 void Remove_Line_Escape_Sequence ( RC_LinkedList * pNode ) ;
 
 
+All_free ( RC_LinkedList * pNode ) ;
+
+
 RC_LinkedList * pHead ;
 RC_LinkedList * pTail ;
 
