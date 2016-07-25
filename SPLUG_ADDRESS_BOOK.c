@@ -13,17 +13,11 @@ void File_Load ( FILE * fAddress )
 	int i = 0 ;
 	int iTemp = 0 ;
 	char cTemp [ 150 ] ;
-	char cNum [ 11 ] ;
+	char cNum [ 20 ] ;
 
 
 	while ( ( NULL != fAddress ) && ( fgets ( cTemp , 149 , fAddress ) ) )
 	{
-		/*if ( 0 != feof ( fAddress ) )						//////// FFFFFFFFFUCCCCCCCCCCCCCCCKKKKKKKKKKKKKKK YYOOOOOOOOOOOOOOOOOOOUUUUUUUUUUU EEEEEEEEEEOOOOOOOOOOOFFFFF
-		{
-			break ;
-		}*/
-
-
 		pTail -> m_pPrev -> m_pNext = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;							// pNode -> m_pNext = pNew
 
 
@@ -31,11 +25,9 @@ void File_Load ( FILE * fAddress )
 		pTail -> m_pPrev -> m_pNext -> m_pPrev = pTail -> m_pPrev ;														// pNew -> m_pPrev = pNode
 		pTail -> m_pPrev = pTail -> m_pPrev -> m_pNext ;																// pTail -> m_pPrev = pNew
 
+		i = 0 ;
+		iTemp = 0 ;
 
-		//fscanf ( fAddress , "%s\t\t%s\t\t%ld\n" , pTail -> m_pPrev -> m_crgName , pTail -> m_pPrev -> m_crgAddress , & pTail -> m_pPrev -> m_lNumber ) ;
-	//	fgets ( cTemp , 149 , fAddress ) ;
-		printf ( "feof : %lf\n" , feof ( fAddress ) ) ;
-		puts ( cTemp ) ;
 
 		while ( '\n' != cTemp [ i ] )
 		{
@@ -104,7 +96,7 @@ void Print_All ()
 	}
 	else
 	{
-		printf ( "There's no member.\n" ) ;
+		printf ( "회원이 존재하지 않습니다.\n" ) ;
 	}
 }
 
@@ -115,6 +107,10 @@ void Print_All ()
 
 void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 {
+	int iFirstNum = 0 ;
+	int iSecondNum = 0 ;
+	int iThirdNum = 0 ;
+
 	if ( bModify )
 	{
 		RC_LinkedList * pTemp = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
@@ -122,17 +118,22 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 		bool bCheck = true ;				// bCheck is true, then ask modify.
 
 
-		printf ( "Name : " ) ;
+		printf ( "이름 : " ) ;
 		scanf ( "%s" , pTemp -> m_crgName ) ;
 		fflush ( stdin ) ;
-		printf ( "Address : " ) ;		
+		printf ( "주소 : " ) ;		
 		fgets ( pTemp -> m_crgAddress , 99 , stdin ) ;
-		printf ( "Number : " ) ;
-		scanf ( "%ld" , & pTemp -> m_lNumber ) ;
+		printf ( "전화번호 : " ) ;
+		scanf ( "%d" , & iFirstNum ) ;
+		scanf ( "%d" , & iSecondNum ) ;
+		scanf ( "%d" , & iThirdNum ) ;
+
+
+		pTemp -> m_lNumber = iFirstNum * 100000000 + iSecondNum * 10000 + iThirdNum ;
 
 		fflush ( stdin ) ;
 
-		printf ( "Save? ( Y or N ) : " ) ;
+		printf ( "저장하시겠습니까? ( Y or N ) : " ) ;
 		scanf ( "%c" , & cTemp ) ;
 
 
@@ -151,7 +152,7 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 				free ( pModify ) ;
 			
 
-				printf ( "Modify Finished.\n" ) ;
+				printf ( "정보가 수정되었습니다.\n" ) ;
 			}
 			// Ignore
 			else if ( ( 'N' == cTemp ) || ( 'n' == cTemp ) )
@@ -161,11 +162,11 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 				free ( pTemp ) ;
 
 
-				printf ( "Modify Cancel.\n" ) ;
+				printf ( "정보 수정이 취소되었습니다.\n" ) ;
 			}
 			else
 			{
-				printf ( "Input Y or N : " ) ;
+				printf ( "Y or N 을 입력하세요 : " ) ;
 				scanf ( "%c" , cTemp ) ;
 			}
 		}
@@ -176,15 +177,20 @@ void Register_Member ( bool bModify , struct RC_LinkedList * pModify )
 		RC_LinkedList * pSort ; 
 
 			
-		printf ( "Name : " ) ;
+		printf ( "이름 : " ) ;
 		scanf ( "%s" , pNode -> m_crgName ) ;
 		
-		printf ( "Address : " ) ;
+		printf ( "주소 : " ) ;
 		fflush ( stdin ) ;
 		fgets ( pNode -> m_crgAddress , 99 , stdin ) ;
 		fflush ( stdin ) ;
-		printf ( "Number : " ) ;
-		scanf ( "%ld" , & pNode -> m_lNumber ) ;
+		printf ( "전화번호 : " ) ;
+		scanf ( "%d" , & iFirstNum ) ;
+		scanf ( "%d" , & iSecondNum ) ;
+		scanf ( "%d" , & iThirdNum ) ;
+
+
+		pNode -> m_lNumber = iFirstNum * 100000000 + iSecondNum * 10000 + iThirdNum ;
 
 		pSort = Sort_Name_Find_Member ( pNode ) ;
 		Remove_Line_Escape_Sequence ( pNode ) ;
@@ -210,11 +216,11 @@ void Search_Member ()
 	char cName [ 10 ] ;
 
 
-	printf ( "Search Member. Choose Method\n" ) ;
-	printf ( "1. Name\n" ) ;
-	printf ( "2. Address\n" ) ;
-	printf ( "3. Number\n" ) ;
-	printf ( "Input : " ) ;
+	printf ( "회원을 검색합니다. 방식을 선택하세요.\n" ) ;
+	printf ( "1. 이름\n" ) ;
+	printf ( "2. 주소\n" ) ;
+	printf ( "3. 전화번호\n" ) ;
+	printf ( "방식 : " ) ;
 
 	scanf ( "%d" , & iMenu ) ;
 
@@ -289,7 +295,7 @@ void Modify_Member ()
 	if ( NULL != pNode )
 		Register_Member ( true , pNode ) ;
 	else
-		printf ( "Member doesn't exist.\n" ) ;
+		printf ( "회원이 존재하지 않습니다.\n" ) ;
 }
 
 /*
@@ -315,7 +321,7 @@ void Delete_Member ()
 		free ( pDelete ) ;
 	}
 	else
-		printf ( "Member doesn't exist.\n" ) ;
+		printf ( "회원이 존재하지 않습니다.\n" ) ;
 }
 
 /*
@@ -323,9 +329,9 @@ void Delete_Member ()
  */
 void Print_One_Member ( struct RC_LinkedList * pNode )
 {
-	printf ( "Name : %s\n" , pNode -> m_crgName ) ;
-	printf ( "Address : %s\n" , pNode -> m_crgAddress ) ;
-	printf ( "Number : 0%ld\n" , pNode -> m_lNumber ) ;
+	printf ( "이름 : %s\n" , pNode -> m_crgName ) ;
+	printf ( "주소 : %s\n" , pNode -> m_crgAddress ) ;
+	printf ( "전화번호 : %03d %04d %04d\n" , pNode -> m_lNumber / 100000000 , pNode -> m_lNumber / 10000 % 10000 , pNode -> m_lNumber % 10000 ) ;
 }
 
 /*
@@ -347,7 +353,7 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 
 	if ( 1 == iMenu )
 	{
-		printf ( "Input Name : " ) ;
+		printf ( "찾으실 회원의 이름을 입력하세요 : " ) ;
 
 		scanf ( "%s" , crgInput ) ;
 
@@ -382,7 +388,7 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 	}
 	else if ( 2 == iMenu )
 	{
-		printf ( "Input Address : " ) ;
+		printf ( "찾으실 회원의 주소를 입력하세요 : " ) ;
 		
 		fflush ( stdin ) ;
 		fgets ( crgInput , 99 , stdin ) ;
@@ -429,13 +435,13 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 		}
 
 		if ( iMenu )
-			printf ( "Member doesn't exist.\n" ) ;
+			printf ( "회원이 존재하지 않습니다.\n" ) ;
 
 
 	}
 	else if ( 3 == iMenu )
 	{
-		printf ( "Input Number : " ) ;
+		printf ( "찾으실 회원의 전화번호를 입력하세요 : " ) ;
 		
 		scanf ( "%ld" , & lTemp ) ;
 
@@ -462,7 +468,7 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 		}
 
 		if ( iMenu )
-			printf ( "Member doesn't exist.\n" ) ;
+			printf ( "회원이 존재하지 않습니다.\n" ) ;
 
 
 	}
@@ -494,7 +500,7 @@ RC_LinkedList * Find_Member ( int iMenu , RC_LinkedList * pInput , char * cNameI
 		}
 		else if ( iMenu )
 		{
-			printf ( "Member doesn't exist.\n" ) ;
+			printf ( "회원이 존재하지 않습니다.\n" ) ;
 			pNode = NULL ;
 		}
 	}
@@ -617,4 +623,16 @@ All_free ( RC_LinkedList * pNode )
 	}
 
 	free ( pNode ) ;
+}
+
+void Menu_Print ()
+{
+	system ( "cls" ) ;
+	printf ( "Menu\n" ) ;
+	printf ( "1. 모든 주소록 정보 출력\n" ) ;
+	printf ( "2. 회원 등록\n" ) ;
+	printf ( "3. 회원 정보 검색\n" ) ;
+	printf ( "4. 회원 정보 수정\n" ) ;
+	printf ( "5. 회원 삭제\n" ) ;
+	printf ( "6. 프로그램 종료\n\n" ) ;
 }
