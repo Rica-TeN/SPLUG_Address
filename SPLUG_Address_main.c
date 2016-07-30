@@ -5,7 +5,6 @@
 int _tmain ()
 {
 	int iInput = 0 ;
-	int iCnt = 0 ;
 	pHead = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
 	pTail = ( RC_LinkedList * ) malloc ( sizeof ( RC_LinkedList ) ) ;
 	FILE * fAddress = fopen ( "Address.txt" , "r+" ) ;
@@ -31,13 +30,6 @@ int _tmain ()
 
 	while ( 6 != iInput )
 	{
-		if ( 2 == iCnt )
-		{
-			Menu_Print () ;
-			iCnt = 0 ;
-		}
-
-
 		printf ( "============================\n" ) ;
 		printf ( "선택할 기능을 입력하세요 : " ) ;
 
@@ -50,29 +42,39 @@ int _tmain ()
 		switch ( iInput )
 		{
 			case 1 :
+				Menu_Print () ;
+				printf ( "============================\n" ) ;
+				printf ( "선택할 기능을 입력하세요 : %d\n" , iInput ) ;
 				printf ( "============================\n" ) ;
 				Print_All () ;
-				++ iCnt ;
 				break ;
 			case 2 :
+				Menu_Print () ;
+				printf ( "============================\n" ) ;
+				printf ( "선택할 기능을 입력하세요 : %d\n" , iInput ) ;
 				printf ( "============================\n" ) ;
 				Register_Member ( false , NULL ) ;
-				++ iCnt ;
 				break ;
 			case 3 :
+				Menu_Print () ;
+				printf ( "============================\n" ) ;
+				printf ( "선택할 기능을 입력하세요 : %d\n" , iInput ) ;
 				printf ( "============================\n" ) ;
 				Search_Member () ;
-				++ iCnt ;
 				break ;
 			case 4 :
+				Menu_Print () ;
+				printf ( "============================\n" ) ;
+				printf ( "선택할 기능을 입력하세요 : %d\n" , iInput ) ;
 				printf ( "============================\n" ) ;
 				Modify_Member () ;
-				++ iCnt ;
 				break ;
 			case 5 :
+				Menu_Print () ;
+				printf ( "============================\n" ) ;
+				printf ( "선택할 기능을 입력하세요 : %d\n" , iInput ) ;
 				printf ( "============================\n" ) ;
 				Delete_Member () ;
-				++ iCnt ;
 				break ;
 			case 6 :
 			default :
